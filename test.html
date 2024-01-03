@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>영화 인기 순위</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <style>
+    li {
+      list-style: none;
+    }
+    #movies .card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+    }
+
+    .movie-card {
+      background-color: firebrick;
+      width: 300px;
+      height: 700px;
+    }
+
+    .movie-card img {
+      height: 400px;
+    }
+  </style>
+  <script>
+    $(document).ready(function () {
+      fetch(
+        "https://api.themoviedb.org/3/discover/movie?api_key=5cacf89925078ce247b0981ec3cea417&language=ko-KR&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_providers=providers%3A8&with_watch_monetization_types=flatrate"
+      )
+        .then((response) => response.json())
+        .then((response) => {
+          let results = response["results"];
+          let cardContainer = $("#movies .card");
+
+          results.forEach((mo) => {
+            let title = mo["title"];
+            let overview = mo["overview"];
+            let vote_average = mo["vote_average"];
+            let imagesrc = `https://image.tmdb.org/t/p/w300/${mo["poster_path"]}`;
+
+            // 각 무비 카드를 위한 템플릿 생성
+            let cardTemplate = `
+              <div class="movie-card">
+                <img src="${imagesrc}" alt="${title}" />
+                <ul>
+                  <li>제목: ${title}</li>
+                  <li>내용 요약: ${overview}</li>
+                  <li>평점: ${vote_average}</li>
+                </ul>
+              </div>
+            `;
+
+            // 무비 카드를 컨테이너에 추가
+            cardContainer.append(cardTemplate);
+          });
+        });
+    });
+
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Y2FjZjg5OTI1MDc4Y2UyNDdiMDk4MWVjM2NlYTQxNyIsInN1YiI6IjY1OGZjNTc2NGY5YTk5NzQ0Nzc2ZjdmMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SxqhmTIqfenzxwMapIsVkl7qGyd5rGofQr0viC1Rzk0",
+      },
+    };
+  </script>
+  <body>
+    <div>
+      <h1>인기 영화</h1>
+    </div>
+    <div class="search">
+      <p>
+        <input type="text" placeholder="영화 제목을 검색하세요" />
+        <button>검색</button>
+      </p>
+    </div>
+    <div id="movies">
+      <div class="card"></div>
+    </div>
+  </body>
+</html>
