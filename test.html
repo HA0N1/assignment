@@ -10,16 +10,23 @@
     li {
       list-style: none;
     }
-    #movies .card {
+    /* #movies .card {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
       width: auto;
+    } */
+    #movies .card {
+      display: grid;
+      grid-template-columns: repeat(4, 20%);
+      grid-auto-rows: auto;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
     }
-
     .movie-card {
-      background-color: firebrick;
+      /* background-color: firebrick; */
       width: 300px;
       height: 700px;
     }
