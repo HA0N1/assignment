@@ -10,13 +10,7 @@
     li {
       list-style: none;
     }
-    /* #movies .card {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      width: auto;
-    } */
+
     #movies .card {
       display: grid;
       grid-template-columns: repeat(4, 20%);
@@ -36,9 +30,13 @@
     }
   </style>
   <script>
+    function a() {
+      alert(`영화 ID : ${results.id}`);
+    }
     $(document).ready(function () {
       fetch(
-        "https://api.themoviedb.org/3/discover/movie?api_key=5cacf89925078ce247b0981ec3cea417&language=ko-KR&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_providers=providers%3A8&with_watch_monetization_types=flatrate"
+        "https://api.themoviedb.org/3/discover/movie?api_key=e30fdd12ee2c7bc52f1123102a7398d7&language=ko-KR&page=1&sort_by=popularity.desc",
+        options
       )
         .then((response) => response.json())
         .then((response) => {
@@ -50,21 +48,22 @@
             let overview = mo["overview"];
             let vote_average = mo["vote_average"];
             let imagesrc = `https://image.tmdb.org/t/p/w300/${mo["poster_path"]}`;
+            let id = mo["id"];
 
             // 각 무비 카드를 위한 템플릿 생성
-            let cardTemplate = `
-              <div class="movie-card">
-                <img src="${imagesrc}" alt="${title}" />
-                <ul>
-                  <li>제목: ${title}</li>
-                  <li>내용 요약: ${overview}</li>
-                  <li>평점: ${vote_average}</li>
-                </ul>
-              </div>
-            `;
+            let cardTemp = `
+                  <div class="movie-card">
+                    <img src="${imagesrc}" alt="${title}" />
+                    <ul>
+                      <li>제목: ${title}</li>
+                      <li>내용 요약: ${overview}</li>
+                      <li>평점: ${vote_average}</li>
+                    </ul>
+                  </div>
+                `;
 
-            // 무비 카드를 컨테이너에 추가
-            cardContainer.append(cardTemplate);
+            // 무비 카드를 추가
+            cardContainer.append(cardTemp);
           });
         });
     });
@@ -74,7 +73,7 @@
       headers: {
         accept: "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Y2FjZjg5OTI1MDc4Y2UyNDdiMDk4MWVjM2NlYTQxNyIsInN1YiI6IjY1OGZjNTc2NGY5YTk5NzQ0Nzc2ZjdmMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SxqhmTIqfenzxwMapIsVkl7qGyd5rGofQr0viC1Rzk0",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzBmZGQxMmVlMmM3YmM1MmYxMTIzMTAyYTczOThkNyIsInN1YiI6IjY1OGZjNTc2NGY5YTk5NzQ0Nzc2ZjdmMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8ia72FPxxblivB86B-AQTrGQ23guwrqXGK17IBJsWIs",
       },
     };
   </script>
@@ -85,7 +84,7 @@
     <div class="search">
       <p>
         <input type="text" placeholder="영화 제목을 검색하세요" />
-        <button>검색</button>
+        <button id="btn" onclick="a()">검색</button>
       </p>
     </div>
     <div id="movies">
