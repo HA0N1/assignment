@@ -13,9 +13,22 @@
     />
   </head>
   <style>
+    header {
+      height: 300px;
+    }
+    .site-name {
+      color: red;
+      text-align: center;
+      font-size: 60px;
+    }
+    body {
+      background-color: black;
+      color: #fff;
+    }
     li {
       list-style: none;
     }
+    /* 무비 컨테이너 */
     #movies {
       display: flex;
       /* 배치 방향 설정. column은 세로 */
@@ -27,88 +40,91 @@
       /* 수직축 위아래*/
       align-items: center;
     }
+    /* 컨테이너 안의 아이템뭉치들 */
     .movie-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      background-color: firebrick;
+      /* justify-content: center; */
+      /* background-color: firebrick; */
       width: 400px;
       height: 1000px;
       margin: 10px;
     }
     /* 마진줘서 이미지랑 글씨 떨어트리기 */
     .movie-card img {
-      margin-bottom: 10px;
-      /* border-style: solid; */
+      margin-bottom: 50px;
+      border-style: solid;
       border-radius: 5px;
     }
     .movie-card ul {
       text-align: left;
       width: 90%;
     }
+    /* child(숫자)나 first-child를 사용하면 특정 요소한테만 줄 수 있음! */
     .movie-card ul li:first-child {
       font-weight: bold;
       font-size: large;
     }
   </style>
   <script>
-    $(document).ready(function test() {
-      const options = {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzBmZGQxMmVlMmM3YmM1MmYxMTIzMTAyYTczOThkNyIsInN1YiI6IjY1OGZjNTc2NGY5YTk5NzQ0Nzc2ZjdmMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8ia72FPxxblivB86B-AQTrGQ23guwrqXGK17IBJsWIs",
-        },
-      };
-      fetch(
-        "https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=1",
-        options
-      )
-        .then((response) => response.json())
-        .then((response) => {
-          let results = response["results"];
-          results.forEach((movie) => {
-            let title = movie["title"];
-            let overview = movie["overview"];
-            let vote_average = movie["vote_average"];
-            let imagesrc = `https://image.tmdb.org/t/p/w300/${movie["poster_path"]}`;
+    // $(document).ready(function test() {
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzBmZGQxMmVlMmM3YmM1MmYxMTIzMTAyYTczOThkNyIsInN1YiI6IjY1OGZjNTc2NGY5YTk5NzQ0Nzc2ZjdmMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8ia72FPxxblivB86B-AQTrGQ23guwrqXGK17IBJsWIs",
+      },
+    };
+    fetch(
+      "https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=1",
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        let results = response["results"];
+        results.forEach((movie) => {
+          let title = movie["title"];
+          let overview = movie["overview"];
+          let vote_average = movie["vote_average"];
+          let imagesrc = `https://image.tmdb.org/t/p/w300/${movie["poster_path"]}`;
+          let id = movie["id"];
 
-            let cardTemp = `
-                  <div class="movie-card">
-                    <img src="${imagesrc}" alt="${title}">
-                    <ul>
-                      <li>제목: ${title}</li>
-                      <li>내용 요약: ${overview}</li>
-                      <li>평점: ${vote_average}</li>
-                    </ul>
-                  </div>
+          let cardTemp = `
+                          <div class="movie-card" id="${id}">
+                            <img src="${imagesrc}" alt="${title}">
+                            <ul>
+                              <li>제목: ${title}</li>
+                              <li>내용 요약: ${overview}</li>
+                              <li>평점: ${vote_average}</li>
+                            </ul>
+                          </div>
 
-                `;
+                        `;
 
-            // api에 연동된 영화들 추가
-            $("#movies").append(cardTemp);
+          // api에 연동된 영화들 추가
+          $("#movies").append(cardTemp);
+          // 이미지 클릭시 아이디 나오게 하기
+          $(`#${id} img`).click(function () {
+            alert(`영화 ID: ${id}`);
           });
         });
-    });
-    // 이미지 클릭시 아이디 나오게 하기
-    function a() {
-      alert(`영화 ID : ${movie.id}`);
-    }
+      });
+    // });
   </script>
   <body>
-    <div>
-      <h1>인기 영화</h1>
-    </div>
-    <div class="search">
-      <p>
-        <input type="text" placeholder="영화 제목을 검색하세요" />
-        <button>검색</button>
-      </p>
-    </div>
-    <div id="movies">
-      <div class="card"></div>
-    </div>
+    <header>
+      <div class="site-name">
+        <p>Top Rated Movies</p>
+      </div>
+      <div class="search">
+        <p>
+          <input type="text" placeholder="영화 제목을 입력하세요" />
+          <button id="btn">검색</button>
+        </p>
+      </div>
+    </header>
+    <div id="movies"></div>
   </body>
 </html>
