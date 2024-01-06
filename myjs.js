@@ -4,17 +4,18 @@ const options = {
   headers: {
     accept: "application/json",
     Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMzBmZGQxMmVlMmM3YmM1MmYxMTIzMTAyYTczOThkNyIsInN1YiI6IjY1OGZjNTc2NGY5YTk5NzQ0Nzc2ZjdmMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8ia72FPxxblivB86B-AQTrGQ23guwrqXGK17IBJsWIs",
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZjYzNTM0Njc4ZTI1MjNlNzIxMDNlMzYyYWQxZWViNiIsInN1YiI6IjY1OGZjNTc2NGY5YTk5NzQ0Nzc2ZjdmMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.F0FoX3lUzAIfTywlttR-OhjlBAMIbI71ZQxoja0E8S8",
   },
 };
 fetch(
-  "https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=1",
+  "https://api.themoviedb.org/3/movie/top_rated?af63534678e2523e72103e362ad1eeb6?language=en-US&page=1', options",
   options
 )
   .then((response) => response.json())
   .then((response) => {
     let results = response["results"];
-    results.forEach((movie) => {
+    for (let i = 0; i < results.length; i++) {
+      let movie = results[i];
       let title = movie["title"];
       let overview = movie["overview"];
       let vote_average = movie["vote_average"];
@@ -39,6 +40,13 @@ fetch(
       $(`#${id} img`).click(function () {
         alert(`영화 ID: ${id}`);
       });
+    }
+    // enter는 13번임. keyup은 눌렀다 땠을때
+    $("input").keyup(function (enter) {
+      if (enter.keyCode == 13) {
+        $("btn").click();
+      }
+      // 단어검색
+      // for문으로 글자 뽑고 or 써서 title 글자랑 비교하기?
     });
   });
-// });

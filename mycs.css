@@ -1,15 +1,15 @@
 header {
-    height: 300px;
+    height: 100px;
 }
 
 .site-name {
-    color: red;
-    text-align: center;
-    font-size: 60px;
+    color: #FF004D;
+    text-align: left;
+    font-size: 20px;
 }
 
 body {
-    background-color: black;
+    background-color: #0e0f12;
     color: #fff;
 }
 
@@ -19,6 +19,7 @@ li {
 
 /* 무비 컨테이너 */
 #movies {
+   /* background-color: navy; */
     display: flex;
     /* 배치 방향 설정. column은 세로 */
     flex-direction: row;
@@ -36,22 +37,24 @@ li {
     flex-direction: column;
     align-items: center;
     /* justify-content: center; */
-    /* background-color: firebrick; */
+   /* background-color: firebrick; */
+
     width: 400px;
-    height: 1000px;
+    height: 900px;
     margin: 10px;
 }
 
 /* 마진줘서 이미지랑 글씨 떨어트리기 */
 .movie-card img {
-    margin-bottom: 50px;
+    margin: 0px;
     border-style: solid;
     border-radius: 5px;
 }
 
 .movie-card ul {
     text-align: left;
-    width: 90%;
+    width: 300px;
+    padding: 5%;
 }
 
 /* child(숫자)나 first-child를 사용하면 특정 요소한테만 줄 수 있음! */
