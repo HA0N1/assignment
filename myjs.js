@@ -41,31 +41,34 @@ fetch(
 
       // 이미지 클릭시 아이디 나오게 하기
       $(`#${id} img`).click(() => {
-        alert(`영화 ID: ${id}`);
+        window.alert(`영화 ID: ${id}`);
       });
       // $(`#${id} img`).click(function () {
       //   alert(`영화 ID: ${id}`);
       // });
     }
-    // 검색 기능 구현
+    // 클릭과 입력을 위해 변수에 할당해주기
     let inputElement = $(document.querySelector("input"));
     let mouseDown = document.querySelector("button");
+    // 검색하는 함수
     function search() {
-      let inputText = inputElement.val().toLowerCase(); //input(This)를 val를 넣어주고 소문자 처리 해버리기
-      $(".movie-card").hide(); // 엔터를 눌렀을때 모든 영화 카드를 숨김
-      results.forEach((movie) => {
-        let title = movie["title"].toLowerCase();
-        if (title.includes(inputText)) {
-          $(`#${movie["id"]}`).show(); // 입력한 값이 title에 포함되어 있으면 show해주기.
-        }
-      });
+      let inputText = inputElement.val().toLowerCase(); //input에 입력 받은 값을 담아주고 소문자 처리.
+      $(".movie-card").hide(); // 일단 다 숨기기
+      // 입력값이랑 title이랑 비교하여 아이디
+      // includes(): 배열의 항목에 특정 값이 포함되어 있는지를 판단 T/F 값으로 반환.
+      //movie["id"]와 동일한 요소
+      results
+        .filter((movie) => movie["title"].toLowerCase().includes(inputText))
+        .forEach((movie) => {
+          $(`#${movie["id"]}`).show();
+        });
     }
+
     mouseDown.addEventListener("click", search);
-    // enter는 13번임. keyup은 눌렀다 땠을때
+
     inputElement.keyup(function press(enter) {
       if (enter.keyCode == 13) {
         search();
-        // alert("안녕");
       }
     });
   });
